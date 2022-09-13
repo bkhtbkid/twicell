@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import Products from "./pages/Products";
+import ProductsEdit from "./pages/edit/Edit";
+import ProductsCreate from "./pages/Create";
+import { Routes, Route } from "react-router-dom";
+import { createContext, useState } from "react";
+
+export const ImageContext = createContext();
+export const IdContext = createContext();
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [images, setImages] = useState([]);
+    const [id, setId] = useState(0);
+
+    return (
+        <ImageContext.Provider value={{ images, setImages }}>
+            <IdContext.Provider value={{ id, setId }}>
+                <section
+                    className="App"
+                    style={{ maxWidth: "900px", margin: "0 auto" }}
+                >
+                    <Routes>
+                        <Route path="/products" element={<Products />} />
+                        <Route
+                            path="/products/create"
+                            element={<ProductsCreate />}
+                        />
+                        <Route
+                            path="/products/:id"
+                            element={<ProductsEdit />}
+                        />
+                        <Route path="*" element={<Products />} />
+                    </Routes>
+                </section>
+            </IdContext.Provider>
+        </ImageContext.Provider>
+    );
 }
 
 export default App;
